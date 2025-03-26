@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>File Processor</title>
+</head>
+<body>
+  <h1>Upload a File to Process</h1>
+  
+  <!-- File upload form -->
+  <form id="uploadForm">
+    <label for="fileInput">Choose file:</label>
+    <input type="file" id="fileInput" name="file" accept=".txt" required>
+    <button type="submit">Submit</button>
+  </form>
+
+  <!-- Link to download processed CSV -->
+  <div id="downloadDiv" style="display: none;">
+    <h3>Download Processed File:</h3>
+    <a id="downloadLink" href="" download="processed.csv">Download CSV</a>
+  </div>
+
+  <script>
+    // Handle form submission
+    document.getElementById('uploadForm').addEventListener('submit', async function(event) {
+      event.preventDefault();
+
+      // Get the file from the input
+      const fileInput = document.getElementById('fileInput');
+      const formData = new FormData();
+      formData.append('file', fileInput.files[0]);
+
+      // Send the file to the backend API
+      try {
+        const response = await fetch('http://localhost:8080/api/process', {
+          method: 'POST',
+          body: formData
+        });
+
+        if (!response.ok) {
+          alert('Response Status not OK.');
+          return;
+        }
+
+        // Convert the response to a Blob (CSV file)
+        const blob = await response.blob();
+
+        if (!blob || blob.size === 0) {
+          alert('Error: The processed file is empty.');
+          return;
+        }
+
+        // Create a download link for the user
+        const downloadLink = document.getElementById('downloadLink');
+        downloadLink.href = URL.createObjectURL(blob);
+        
+        // Show the download section
+        document.getElementById('downloadDiv').style.display = 'block';
+
+      } catch (error) {
+        console.error('Error:', error);
+        alert('Error processing file.');
+      }
+    });
+  </script>
+</body>
+</html>
