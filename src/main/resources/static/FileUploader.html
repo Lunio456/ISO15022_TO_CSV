@@ -33,7 +33,7 @@
 
       // Send the file to the backend API
       try {
-        const response = await fetch('http://localhost:8080/api/process', {
+        const response = await fetch('/api/process', {
           method: 'POST',
           body: formData
         });
