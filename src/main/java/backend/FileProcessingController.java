@@ -189,7 +189,7 @@ public class FileProcessingController {
             csvWriter.flush();
             System.out.println("CSV file 'output.csv' has been generated successfully!");
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println("Exception occurred during the CSV file generation: " + e.getMessage());
         }
         return byteArrayOutputStream;
     }
