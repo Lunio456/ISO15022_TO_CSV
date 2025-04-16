@@ -135,8 +135,10 @@
       });
 
       if (!response.ok) {
-        alert('Error: Cannot process the file. Please try again.');
-        return;
+         const errorText = await response.text();
+         console.error('Response failed:', errorText);
+         alert(`Error: Cannot process the file. Error details: ${errorText}`);
+         return;
       }
 
       // Convert the response to a Blob (CSV file)

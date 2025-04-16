@@ -122,7 +122,7 @@ public class FileProcessingController {
             return;
         }
         String key = line.substring(0, line.indexOf("//"));
-        String value = line.substring(line.indexOf("//") + 2);
+        String value = line.substring(line.indexOf("//") + 2).replaceAll(",", ".");
         recordMap.put(key, value);
         System.out.println(line);
     }
